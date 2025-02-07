@@ -25,6 +25,7 @@ namespace MothraForum.Controllers
             var discussions = await _context.Discussions
                 .Include(d => d.Comments)
                 .Include(d => d.Votes)
+                .OrderByDescending(d => d.CreatedAt)
                 .ToListAsync();
             return View(discussions);
         }
@@ -38,6 +39,7 @@ namespace MothraForum.Controllers
             var discussion = await _context.Discussions
                 .Include(d => d.Comments)
                 .Include(d => d.Votes)
+                .OrderByDescending(d => d.CreatedAt)
                 .FirstOrDefaultAsync(d => d.DiscussionId == id);
 
             if (discussion == null){
@@ -72,7 +74,7 @@ namespace MothraForum.Controllers
 
                 _context.Add(discussion);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Home");
             }
             return View(discussion);
         }
@@ -121,7 +123,7 @@ namespace MothraForum.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Home");
             }
             return View(discussion);
         }
@@ -152,7 +154,7 @@ namespace MothraForum.Controllers
             var discussion = await _context.Discussions.FindAsync(id);
             _context.Discussions.Remove(discussion);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index", "Home");
         }
 
         // post to vote

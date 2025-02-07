@@ -6,7 +6,6 @@
 
 <h1>Discussions</h1>
 
-<!-- Display all discussions -->
 @foreach (var discussion in Model)
 {
     <div>
@@ -14,15 +13,13 @@
         <p>@discussion.Content</p>
         <p><strong>Created at:</strong> @discussion.CreatedAt</p>
 
-        <!-- Optional: Display image if available -->
         @if (!string.IsNullOrEmpty(discussion.ImageFilename))
         {
-            <img src="@Url.Content("~/uploads/" + discussion.ImageFilename)" alt="Discussion Image" style="max-width: 200px;" />
+            <img src="@Url.Content("~/images/" + discussion.ImageFilename)" alt="Discussion Image" style="max-width: 200px;" />
         }
 
         <hr />
     </div>
 }
 
-<!-- Button to add new discussion -->
 <a href="@Url.Action("Create", "Discussion")" class="btn btn-primary">Add New Discussion</a>

@@ -22,6 +22,7 @@ public class HomeController : Controller
         var discussions = await _context.Discussions
                                         .Include(d => d.Votes)
                                         .Include(d => d.Comments)
+                                        .OrderByDescending(d => d.CreatedAt)
                                         .ToListAsync();
 
         return View(discussions);
@@ -32,6 +33,7 @@ public class HomeController : Controller
         var discussion = await _context.Discussions
                                        .Include(d => d.Votes)
                                        .Include(d => d.Comments)
+                                       .OrderByDescending(d => d.CreatedAt)
                                        .FirstOrDefaultAsync(d => d.DiscussionId == id);
 
         if (discussion == null)
