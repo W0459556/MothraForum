@@ -1,32 +1,44 @@
-using System.Diagnostics;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using MothraForum.Data;
 using MothraForum.Models;
 
-namespace MothraForum.Controllers
+public class HomeController : Controller
 {
-    public class HomeController : Controller
+    private readonly MothraForumContext _context;
+
+    public HomeController(MothraForumContext context)
     {
-        private readonly ILogger<HomeController> _logger;
+        _context = context;
+    }
 
-        public HomeController(ILogger<HomeController> logger)
+    public async Task<IActionResult> Index()
+    {
+        var discussions = await _context.Discussions
+                                        .Include(d => d.Votes)
+                                        .Include(d => d.Comments)
+                                        .ToListAsync();
+
+        return View(discussions);
+    }
+
+    public async Task<IActionResult> DiscussionDetails(int id)
+    {
+        var discussion = await _context.Discussions
+                                       .Include(d => d.Votes)
+                                       .Include(d => d.Comments)
+                                       .FirstOrDefaultAsync(d => d.DiscussionId == id);
+
+        if (discussion == null)
         {
-            _logger = logger;
+            return NotFound();
         }
 
-        public IActionResult Index()
-        {
-            return View();
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
+        return View(discussion);
     }
 }

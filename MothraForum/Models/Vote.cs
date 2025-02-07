@@ -1,4 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
+using MothraForum.Models;
+
 
 namespace MothraForum.Models
 {
