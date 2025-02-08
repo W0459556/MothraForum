@@ -1,0 +1,48 @@
+﻿input[type="text"] {
+    color: white !important;
+    background-color: rgb(78, 78, 78);
+    outline: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    opacity: 1 !important;
+}
+
+    input[type="text"]::placeholder {
+        color: white !important;
+        opacity: 1;
+    }
+
+    input[type="text"]:focus {
+        outline: none !important;
+        box-shadow: none !important;
+    }
+
+.header {
+    border-bottom: 1px solid rgb(123, 123, 123);
+}
+
+.post {
+    background-color: rgb(42, 42, 42);
+}
+
+    .post:hover {
+        background-color: rgb(69, 69, 69);
+    }
+
+.post-d {
+    background-color: rgb(42, 42, 42);
+}
+.imageContainer {
+    max-height: 500px;
+    max-width: 500px;
+    overflow: hidden;
+    margin: 0 auto;
+}
+
+.imageContainerContainer {
+    background-color: rgb(50, 50, 50);
+}
+
+img {
+    margin: 0 auto;
+}

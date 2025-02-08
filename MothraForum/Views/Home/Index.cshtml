@@ -3,23 +3,60 @@
 @{
     ViewData["Title"] = "Discussions";
 }
-
 <h1>Discussions</h1>
 
 @foreach (var discussion in Model)
 {
     <div>
-        <h2>@discussion.Title</h2>
-        <p>@discussion.Content</p>
-        <p><strong>Created at:</strong> @discussion.CreatedAt</p>
+        <div class="rounded-4 post m-3 p-5 text-white">
+            <a class="link-light text-decoration-none" href="@Url.Action("Details", "Discussion", new { id = discussion.DiscussionId })">
+                <div class="col-12">
+                    <h3>@discussion.Title</h3>
+                    <p class="small text-secondary">@discussion.CreatedAt</p>
+                </div>
 
-        @if (!string.IsNullOrEmpty(discussion.ImageFilename))
-        {
-            <img src="@Url.Content("~/images/" + discussion.ImageFilename)" alt="Discussion Image" style="max-width: 200px;" />
-        }
+                @if(!string.IsNullOrEmpty(discussion.ImageFilename))
+                {
+                    <div class="col-12 mb-3">
+                        <div class="imageContainerContainer rounded-4">
+                            <div class="imageContainer">
+                                <img src="@Url.Content("~/images/" + discussion.ImageFilename)" alt="@discussion.Title" class="img-fluid">
+                            </div>
+                        </div>
+                    </div>
+                }else{
+                    <p>@discussion.Content</p>
+                }
 
-        <hr />
+            </a>
+
+            <div class="row">
+                <div class="col-6 d-flex align-items-center">
+                    <div class="rounded-pill bg-secondary">
+                        <form method="post" asp-controller="Vote" asp-action="Create" asp-route-discussionId="@discussion.DiscussionId" asp-route-value="1" class="d-inline">
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="btn btn-black">
+                                <i class="text-danger fa-solid fa-2x fa-angle-up"></i>
+                            </button>
+                        </form>
+
+                        @discussion.Votes.Sum(v => v.Value)
+
+                        <form method="post" asp-controller="Vote" asp-action="Create" asp-route-discussionId="@discussion.DiscussionId" asp-route-value="-1" class="d-inline">
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="btn btn-black">
+                                <i class="fa-solid text-info fa-2x fa-angle-down"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="col-6 d-flex justify-content-end">
+                    <button class="btn btn-secondary rounded-circle btn-icon">
+                        <i class="fas fa-comment"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 }
-
-<a href="@Url.Action("Create", "Discussion")" class="btn btn-primary">Add New Discussion</a>

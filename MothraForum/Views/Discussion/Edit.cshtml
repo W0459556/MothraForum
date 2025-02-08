@@ -1,0 +1,40 @@
+﻿@model MothraForum.Models.Discussion
+
+@{
+    ViewData["Title"] = "Edit Discussion";
+}
+
+<div class="container mt-5">
+    <div class="rounded-4 post-d p-4 text-white">
+        <form method="post">
+            @Html.AntiForgeryToken()
+
+            <div class="mb-3">
+                <label for="Title" class="form-label">Title</label>
+                <input type="text" id="Title" name="Title" class="form-control" value="@Model.Title">
+            </div>
+
+            @if (!string.IsNullOrEmpty(Model.ImageFilename))
+            {
+                <div class="col-12 mb-3">
+                    <img src="@Url.Content("~/images/" + Model.ImageFilename)" alt="@Model.Title" class="img-fluid">
+                </div>
+            }
+
+            <div class="mb-3">
+                <label for="Content" class="form-label">Content</label>
+                <textarea id="Content" name="Content" class="form-control" rows="5">@Model.Content</textarea>
+            </div>
+
+            <div class="row">
+                <div class="col-6 d-flex align-items-center">
+                    
+                </div>
+
+                <div class="col-6 d-flex justify-content-end">
+                    <button type="submit" class="btn btn-primary px-4">Save</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

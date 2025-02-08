@@ -33,7 +33,7 @@ namespace MothraForum.Controllers
             _context.Add(vote);
             await _context.SaveChangesAsync(); // add vote & save
 
-            return RedirectToAction("Details", "Discussion", new { id = discussionId }); // Redirect to the discussion details page
+            return RedirectToAction("Index", "Home", new { id = discussionId }); // Redirect to the discussion details page
         }
     }
 }
