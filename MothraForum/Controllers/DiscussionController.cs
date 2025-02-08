@@ -123,7 +123,7 @@ namespace MothraForum.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Details", new { id = discussion.DiscussionId });
             }
             return View(discussion);
         }
