@@ -1,18 +1,14 @@
 ﻿@model MothraForum.Models.Discussion
 
-@{
-    ViewData["Title"] = "Edit Discussion";
-}
+@{ViewData["Title"] = "Edit Discussion";}
 
 <div class="container mt-5">
     <div class="rounded-4 post-d p-4 text-white">
         <form asp-action="Edit" method="post">
             <input type="hidden" asp-for="DiscussionId" />
-            @Html.AntiForgeryToken()
-
             <div class="mb-3">
                 <label for="Title" class="form-label">Title</label>
-                <input type="text" id="Title" name="Title" class="form-control" value="@Model.Title">
+                <input type="text" id="Title" name="Title" class="form-control bg-dark" value="@Model.Title">
             </div>
 
             @if (!string.IsNullOrEmpty(Model.ImageFilename))
@@ -24,7 +20,7 @@
 
             <div class="mb-3">
                 <label for="Content" class="form-label">Content</label>
-                <textarea id="Content" name="Content" class="form-control" rows="5">@Model.Content</textarea>
+                <textarea id="Content" name="Content" class="form-control bg-dark" rows="5">@Model.Content</textarea>
             </div>
 
             <div class="row">

@@ -34,7 +34,7 @@
                 <div class="col-6 d-flex align-items-center">
                     <div class="rounded-pill bg-secondary">
                         <form method="post" asp-controller="Vote" asp-action="Create" asp-route-discussionId="@discussion.DiscussionId" asp-route-value="1" class="d-inline">
-                            @Html.AntiForgeryToken()
+                            
                             <button type="submit" class="btn btn-black">
                                 <i class="text-danger fa-solid fa-2x fa-angle-up"></i>
                             </button>
@@ -43,7 +43,7 @@
                         @discussion.Votes.Sum(v => v.Value)
 
                         <form method="post" asp-controller="Vote" asp-action="Create" asp-route-discussionId="@discussion.DiscussionId" asp-route-value="-1" class="d-inline">
-                            @Html.AntiForgeryToken()
+                            
                             <button type="submit" class="btn btn-black">
                                 <i class="fa-solid text-info fa-2x fa-angle-down"></i>
                             </button>

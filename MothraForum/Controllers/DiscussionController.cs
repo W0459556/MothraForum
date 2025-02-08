@@ -57,7 +57,7 @@ namespace MothraForum.Controllers
 
         // create discussion
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        
         public async Task<IActionResult> Create([Bind("Title,Content,ImageFile")] Discussion discussion){
             if (ModelState.IsValid){
                 discussion.CreatedAt = DateTime.Now;
@@ -97,7 +97,7 @@ namespace MothraForum.Controllers
 
         // post discussion edit
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        
         public async Task<IActionResult> Edit(int id, [Bind("DiscussionId,Title,Content,ImageFilename")] Discussion discussion)
         {
             if (id != discussion.DiscussionId)
@@ -148,7 +148,7 @@ namespace MothraForum.Controllers
 
         // post delete
         [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
+        
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var discussion = await _context.Discussions.FindAsync(id);
@@ -159,7 +159,7 @@ namespace MothraForum.Controllers
 
         // post to vote
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        
         public async Task<IActionResult> Vote(int id, int value)
         {
             var discussion = await _context.Discussions.Include(d => d.Votes).FirstOrDefaultAsync(d => d.DiscussionId == id);

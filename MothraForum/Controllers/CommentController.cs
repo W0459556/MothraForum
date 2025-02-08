@@ -28,19 +28,27 @@ namespace MothraForum.Controllers
 
         // POST: Comment/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Content,DiscussionId")] Comment comment)
+        
+        public async Task<IActionResult> AddComment(int discussionId, string content)
         {
-            if (ModelState.IsValid)
+            if (string.IsNullOrWhiteSpace(content))
             {
-                comment.CreatedAt = DateTime.Now; // set creation date
-
-                _context.Add(comment);
-                await _context.SaveChangesAsync();
-                return RedirectToAction("Details", "Discussion", new { id = comment.DiscussionId });
+                return RedirectToAction("Details", "Discussion", new { id = discussionId });
             }
-            return View(comment);
+
+            var comment = new Comment
+            {
+                DiscussionId = discussionId,
+                Content = content,
+                CreatedAt = DateTime.Now
+            };
+
+            _context.Comments.Add(comment);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Details", "Discussion", new { id = discussionId });
         }
+
 
         // GET: Comment/Edit/5
         public async Task<IActionResult> Edit(int id)
@@ -55,7 +63,7 @@ namespace MothraForum.Controllers
 
         // POST: Comment/Edit/5
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        
         public async Task<IActionResult> Edit(int id, [Bind("CommentId,Content")] Comment comment)
         {
             if (id != comment.CommentId)
@@ -70,14 +78,10 @@ namespace MothraForum.Controllers
                     _context.Update(comment);
                     await _context.SaveChangesAsync();
                 }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!CommentExists(comment.CommentId))
-                    {
+                catch (DbUpdateConcurrencyException){
+                    if (!CommentExists(comment.CommentId)){
                         return NotFound();
-                    }
-                    else
-                    {
+                    }else{
                         throw;
                     }
                 }
@@ -101,7 +105,7 @@ namespace MothraForum.Controllers
 
         // POST: Comment/Delete/5
         [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
+        
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var comment = await _context.Comments.FindAsync(id);

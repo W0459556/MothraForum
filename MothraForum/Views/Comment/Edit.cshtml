@@ -1,0 +1,23 @@
+﻿@model MothraForum.Models.Comment
+
+@{
+    ViewData["Title"] = "Edit Comment";
+}
+
+<div class="container mt-5">
+    <div class="rounded-4 p-4 text-white">
+        <h2>Edit Comment</h2>
+        <form method="post" class="mt-4">
+            <input type="hidden" name="CommentId" value="@Model.CommentId" />
+            <input type="hidden" name="DiscussionId" value="@Model.DiscussionId" />
+            <input type="hidden" name="Discussion" value="@Model.Discussion" />
+
+
+            <div class="mb-3">
+                <textarea class="form-control bg-dark text-white" name="Content" rows="3" required>@Model.Content</textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+        </form>
+    </div>
+</div>

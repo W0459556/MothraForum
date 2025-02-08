@@ -21,7 +21,7 @@ namespace MothraForum.Controllers
 
         // POST: Vote/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        
         public async Task<IActionResult> Create(int discussionId, int value)
         {
             var vote = new Vote
