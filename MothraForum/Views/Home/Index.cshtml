@@ -51,10 +51,10 @@
                     </div>
                 </div>
 
-                <div class="col-6 d-flex justify-content-end">
-                    <button class="btn btn-secondary rounded-circle btn-icon">
-                        <i class="fas fa-comment"></i>
-                    </button>
+                <div class="col-6 d-flex justify-content-end align-items-center">
+                    <a href="@Url.Action("Details", "Discussion", new { id = discussion.DiscussionId })" class="btn btn-secondary rounded-pill btn-icon d-flex align-items-center">
+                        <i class="fas fa-comment me-2"></i> @discussion.Comments.Count()
+                    </a>
                 </div>
             </div>
         </div>
