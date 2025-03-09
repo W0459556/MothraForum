@@ -33,7 +33,7 @@ namespace MothraForum.Controllers
         {
             if (string.IsNullOrWhiteSpace(content))
             {
-                return RedirectToAction("Details", "Discussion", new { id = discussionId });
+                return RedirectToAction("DiscussionDetails", "Home", new { id = discussionId });
             }
 
             var comment = new Comment
@@ -46,75 +46,7 @@ namespace MothraForum.Controllers
             _context.Comments.Add(comment);
             await _context.SaveChangesAsync();
 
-            return RedirectToAction("Details", "Discussion", new { id = discussionId });
-        }
-
-
-        // GET: Comment/Edit/5
-        public async Task<IActionResult> Edit(int id)
-        {
-            var comment = await _context.Comments.FindAsync(id);
-            if (comment == null)
-            {
-                return NotFound();
-            }
-            return View(comment);
-        }
-
-        // POST: Comment/Edit/5
-        [HttpPost]
-        
-        public async Task<IActionResult> Edit(int id, [Bind("CommentId,Content")] Comment comment)
-        {
-            if (id != comment.CommentId)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(comment);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException){
-                    if (!CommentExists(comment.CommentId)){
-                        return NotFound();
-                    }else{
-                        throw;
-                    }
-                }
-                return RedirectToAction("Details", "Discussion", new { id = comment.DiscussionId });
-            }
-            return View(comment);
-        }
-
-        // GET: Comment/Delete/5
-        public async Task<IActionResult> Delete(int id)
-        {
-            var comment = await _context.Comments
-                .FirstOrDefaultAsync(m => m.CommentId == id);
-            if (comment == null)
-            {
-                return NotFound();
-            }
-
-            return View(comment);
-        }
-
-        // POST: Comment/Delete/5
-        [HttpPost, ActionName("Delete")]
-        
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var comment = await _context.Comments.FindAsync(id);
-            if (comment != null)
-            {
-                _context.Comments.Remove(comment);
-                await _context.SaveChangesAsync();
-            }
-            return RedirectToAction("Details", "Discussion", new { id = comment.DiscussionId });
+            return RedirectToAction("DiscussionDetails", "Home", new { id = discussionId });
         }
 
         private bool CommentExists(int id)
