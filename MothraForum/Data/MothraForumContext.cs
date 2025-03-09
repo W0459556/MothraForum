@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using MothraForum.Models;
 
 namespace MothraForum.Data
 {
-    public class MothraForumContext : DbContext
+    public class MothraForumContext : IdentityDbContext
     {
         public MothraForumContext(DbContextOptions<MothraForumContext> options)
             : base(options)

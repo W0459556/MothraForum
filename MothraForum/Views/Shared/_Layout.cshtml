@@ -4,68 +4,45 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Mothra</title>
+
+    <!-- Stylesheets -->
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/MothraForum.styles.css" asp-append-version="true" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mothra</title>
-    <link rel="stylesheet" href="style.css">
     <link href="~/css/custom.css" rel="stylesheet" />
-    <link rel="icon" type="image/x-icon" href="/img/mothicon.png">
+
+    <!-- FontAwesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/img/mothicon.png">
+
+    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </head>
 <body class="bg-black">
     <div class="bg-black py-3 header sticky-top border-bottom border-secondary">
         <div class="container">
             <div class="row">
-                <!-- title -->
-                <div class="col-md-3 col-6 align-content-center">
-                    <div><a class="text-decoration-none" href="@Url.Action("Index", "Home")"><h1 class="text-white">Mothra</h1></a></div>
+                <!-- Mothra Logo -->
+                <div class="col-4 d-flex align-items-center">
+                    <a class="text-decoration-none" href="@Url.Action("Index", "Home")">
+                        <h1 class="text-white">Mothra</h1>
+                    </a>
                 </div>
 
-                <!-- profile and add post buttons small -->
-                <div class="d-md-none d-block col-6 align-content-center text-end">
-                    <div>
-                        <button class="btn btn-secondary rounded-circle btn-icon">
-                            <i class="fas fa-bell"></i>
-                        </button>
-                        <a href="@Url.Action("Create", "Home")" class="link-light btn btn-secondary text-decoration-none mx-2 rounded-circle btn-icon">
-                            <i class="fas fa-plus"></i>
-                        </a>
-                        <button class="btn btn-secondary rounded-circle btn-icon">
-                            <i class="fas fa-user"></i>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- search bar -->
-                <div class="col-md-6 col-sm-12 align-content-center">
-                    <div class="search-container">
-                        <input type="text" class="form-control rounded-pill search-input" placeholder=" Search Mothra (not yet functional)">
-                    </div>
-                </div>
-
-                <!-- profile and add post buttons med+ -->
-                <div class="col-md-3 d-none d-md-block align-content-center text-end">
+                <div class="col-8 d-flex align-items-center justify-content-end">
                     <button class="btn btn-secondary rounded-circle btn-icon">
                         <i class="fas fa-bell"></i>
                     </button>
-                    <a href="@Url.Action("Create", "Home")" class="link-light btn link-light btn-secondary mx-2 rounded-circle">
+                    <a href="@Url.Action("Create", "Home")" class="text-decoration-none link-white text-white btn link-light btn-secondary mx-2 rounded-circle">
                         <i class="fas fa-plus"></i>
                     </a>
-                    <button class="btn btn-secondary rounded-circle btn-icon">
-                        <i class="fas fa-user"></i>
-                    </button>
+                    <partial name="_LoginPartial" />
                 </div>
             </div>
         </div>
     </div>
-
-
 
     <div class="container bg-black text-light p-5 border-secondary border-start border-end">
         <main role="main" class="pb-3">
@@ -73,10 +50,7 @@
         </main>
     </div>
 
-
-
-
-    
+    <!-- Scripts -->
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
