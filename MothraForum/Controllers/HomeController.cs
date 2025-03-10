@@ -17,35 +17,37 @@ public class HomeController : Controller
         _userManager = userManager;
     }
 
-    // Home (Index) page to display discussions
     public async Task<IActionResult> Index()
     {
         var discussions = await _context.Discussions
-                                        .Include(d => d.Votes)
-                                        .Include(d => d.Comments)
-                                        .OrderByDescending(d => d.CreatedAt)
-                                        .ToListAsync();
+            .Include(d => d.User)
+            .Include(d => d.Votes)
+            .Include(d => d.Comments)
+            .OrderByDescending(d => d.CreatedAt)
+            .ToListAsync();
+
         return View(discussions);
     }
 
-    // Discussion details page
+
     public async Task<IActionResult> DiscussionDetails(int id)
     {
         var discussion = await _context.Discussions
-                                       .Include(d => d.Comments)
-                                       .Include(d => d.Votes)
-                                       .OrderByDescending(d => d.CreatedAt)
-                                       .FirstOrDefaultAsync(d => d.DiscussionId == id);
+            .Include(d => d.User)
+            .Include(d => d.Comments)
+                .ThenInclude(c => c.User)
+            .Include(d => d.Votes)
+            .OrderByDescending(d => d.CreatedAt)
+            .FirstOrDefaultAsync(d => d.DiscussionId == id);
 
         if (discussion == null)
         {
-            return NotFound();
+            return NotFound(); 
         }
 
         return View(discussion);
     }
 
-    // Voting action
     [HttpPost]
     public async Task<IActionResult> Vote(int id, int value)
     {
@@ -65,7 +67,6 @@ public class HomeController : Controller
         return RedirectToAction(nameof(DiscussionDetails), new { id });
     }
 
-    // Profile page for a specific user
     public async Task<IActionResult> Profile(string id)
     {
         var user = await _userManager.FindByIdAsync(id);
@@ -75,10 +76,11 @@ public class HomeController : Controller
         }
 
         var discussions = await _context.Discussions
-                                         .Where(d => d.ApplicationUserId == user.Id)
-                                         .Include(d => d.Votes)
-                                         .Include(d => d.Comments)
-                                         .ToListAsync();
+            .Where(d => d.ApplicationUserId == user.Id)
+            .Include(d => d.User)
+            .Include(d => d.Votes)
+            .Include(d => d.Comments)
+            .ToListAsync();
 
         var model = new ProfileViewModel
         {
@@ -88,4 +90,5 @@ public class HomeController : Controller
 
         return View(model);
     }
+
 }

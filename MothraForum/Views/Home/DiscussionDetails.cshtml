@@ -11,8 +11,29 @@
     ViewData["Title"] = Model.Title;
 }
 
-<div class="container mt-5">
-    <div class="rounded-4 post-d p-5 text-white">
+<div class="container">
+    <div class="rounded-4 p-5 text-white text-start">
+
+
+        <div class="row">
+            <div class="col-12 justify-content-start text-start">
+                <div>
+                    <a href="@Url.Action("Profile", "Home", new { id = Model.ApplicationUserId })" class="text-white text-start">
+                    @if (Model.User?.ImageFilename != null)
+                    {
+                        <img src="@Url.Content("~/images/" + Model.User.ImageFilename)" alt="@Model.User.Name" class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover;">
+                    }
+                    else
+                    {
+                        <img src="@Url.Content("~/images/image.jpg")" alt="@Model.User.Name" class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover;">
+                    }
+                    &nbsp; @Model.User.Name</a>
+                </div>
+            </div>
+        </div>
+        
+
+
         <h2>@Model.Title</h2>
         <p class="small text-secondary">@Model.CreatedAt</p>
 
@@ -80,9 +101,21 @@
 
         @foreach (var comment in Model.Comments)
         {
-            <div class="my-2">
+            <div class="my-2 px-1">
+                <p class="small text-secondary">
+                    @if (comment.User != null)
+                    {
+                        <a class="link-light" href="@Url.Action("Profile", "Home", new { id = comment.ApplicationUserId })">
+                            @comment.User.Name
+                        </a>
+                    }
+                    else
+                    {
+                        <span>Unknown User</span>
+                    }
+                    - @comment.CreatedAt
+                </p>
                 <p>@comment.Content</p>
-                <p class="small text-secondary">@comment.CreatedAt</p>
             </div>
             <hr class="p4" />
         }

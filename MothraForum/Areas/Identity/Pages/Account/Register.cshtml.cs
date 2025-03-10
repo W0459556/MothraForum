@@ -109,7 +109,7 @@ namespace MothraForum.Areas.Identity.Pages.Account
                     Email = Input.Email,
                     Name = Input.Name,
                     Location = Input.Location,
-                    ImageFilename = "image.png" 
+                    ImageFilename = "image.jpg" 
                 };
 
                 if (Input.ImageFile != null)
@@ -134,7 +134,7 @@ namespace MothraForum.Areas.Identity.Pages.Account
                 }
                 else
                 {
-                    user.ImageFilename = "image.png";
+                    user.ImageFilename = "image.jpg";
                 }
 
                 var result = await _userManager.CreateAsync(user, Input.Password);

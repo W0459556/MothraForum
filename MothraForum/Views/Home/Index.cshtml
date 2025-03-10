@@ -9,6 +9,23 @@
 {
     <div>
         <div class="rounded-4 post m-3 p-5 text-white">
+            <div class="row">
+            <div class="col-12 justify-content-start text-start">
+                <div>
+                    <a href="@Url.Action("Profile", "Home", new { id = discussion.ApplicationUserId })" class="text-white text-start">
+                    @if (discussion.User?.ImageFilename != null)
+                    {
+                        <img src="@Url.Content("~/images/" + discussion.User.ImageFilename)" alt="@discussion.User.Name" class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover;">
+                    }
+                    else
+                    {
+                        <img src="@Url.Content("~/images/image.jpg")" alt="@discussion.User.Name" class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover;">
+                    }
+                    &nbsp; @discussion.User.Name</a>
+                </div>
+            </div>
+        </div>
+
             <a class="link-light text-decoration-none" asp-controller="Home" asp-action="DiscussionDetails" asp-route-id="@discussion.DiscussionId">
                 <div class="col-12">
                     <h3>@discussion.Title</h3>
