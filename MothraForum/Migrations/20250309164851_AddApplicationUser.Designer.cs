@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MothraForum.Data;
 
@@ -10,9 +11,11 @@ using MothraForum.Data;
 namespace MothraForum.Migrations
 {
     [DbContext(typeof(MothraForumContext))]
-    partial class MothraForumContextModelSnapshot : ModelSnapshot
+    [Migration("20250309164851_AddApplicationUser")]
+    partial class AddApplicationUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.13");
@@ -66,7 +69,7 @@ namespace MothraForum.Migrations
                     b.ToTable("AspNetRoleClaims", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.ApplicationUserClaim<string>", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -89,7 +92,7 @@ namespace MothraForum.Migrations
                     b.ToTable("AspNetUserClaims", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.ApplicationUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
                         .HasMaxLength(128)
@@ -113,7 +116,7 @@ namespace MothraForum.Migrations
                     b.ToTable("AspNetUserLogins", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.ApplicationUserRole<string>", b =>
                 {
                     b.Property<string>("UserId")
                         .HasColumnType("TEXT");
@@ -128,7 +131,7 @@ namespace MothraForum.Migrations
                     b.ToTable("AspNetUserRoles", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.ApplicationUserToken<string>", b =>
                 {
                     b.Property<string>("UserId")
                         .HasColumnType("TEXT");
@@ -169,7 +172,6 @@ namespace MothraForum.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("ImageFilename")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Location")
@@ -301,7 +303,7 @@ namespace MothraForum.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.ApplicationUserClaim<string>", b =>
                 {
                     b.HasOne("MothraForum.Models.ApplicationUser", null)
                         .WithMany()
@@ -310,7 +312,7 @@ namespace MothraForum.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.ApplicationUserLogin<string>", b =>
                 {
                     b.HasOne("MothraForum.Models.ApplicationUser", null)
                         .WithMany()
@@ -319,7 +321,7 @@ namespace MothraForum.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.ApplicationUserRole<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
                         .WithMany()
@@ -334,7 +336,7 @@ namespace MothraForum.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.ApplicationUserToken<string>", b =>
                 {
                     b.HasOne("MothraForum.Models.ApplicationUser", null)
                         .WithMany()

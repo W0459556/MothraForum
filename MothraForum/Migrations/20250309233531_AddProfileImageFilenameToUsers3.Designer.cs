@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MothraForum.Data;
 
@@ -10,9 +11,11 @@ using MothraForum.Data;
 namespace MothraForum.Migrations
 {
     [DbContext(typeof(MothraForumContext))]
-    partial class MothraForumContextModelSnapshot : ModelSnapshot
+    [Migration("20250309233531_AddProfileImageFilenameToUsers3")]
+    partial class AddProfileImageFilenameToUsers3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.13");
@@ -66,7 +69,7 @@ namespace MothraForum.Migrations
                     b.ToTable("AspNetRoleClaims", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.Claim<string>", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()

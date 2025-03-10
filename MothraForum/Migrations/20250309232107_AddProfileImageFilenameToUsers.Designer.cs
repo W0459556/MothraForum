@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MothraForum.Data;
 
@@ -10,9 +11,11 @@ using MothraForum.Data;
 namespace MothraForum.Migrations
 {
     [DbContext(typeof(MothraForumContext))]
-    partial class MothraForumContextModelSnapshot : ModelSnapshot
+    [Migration("20250309232107_AddProfileImageFilenameToUsers")]
+    partial class AddProfileImageFilenameToUsers
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.13");
@@ -169,7 +172,6 @@ namespace MothraForum.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("ImageFilename")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Location")

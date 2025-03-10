@@ -24,3 +24,59 @@ body {
 a {
     text-decoration: none;
 }
+
+/* Make all text inputs white with black text */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+textarea {
+    background-color: white !important;
+    color: black !important;
+    border: 1px solid #ccc; /* Optional: Adds a subtle border */
+}
+
+input::placeholder {
+    color: #555; /* Optional: Dark gray placeholder */
+}
+
+/* Ensure Bootstrap's floating labels also remain visible */
+.form-floating > label {
+    color: black !important;
+}
+
+/* Improve file input visibility */
+input[type="file"] {
+    background-color: white !important;
+    color: black !important;
+}
+
+.form-floating input {
+    background-color: white !important;
+    color: black !important;
+}
+
+.form-floating label {
+    color: black !important;
+    opacity: 1 !important;
+}
+
+.form-floating input::placeholder {
+    color: transparent !important; /* Placeholder isn't needed due to floating label */
+}
+
+.form-floating input:focus ~ label,
+.form-floating input:not(:placeholder-shown) ~ label {
+    color: #000 !important;
+}
+
+/* Ensure input text is black and background is white */
+.form-floating input {
+    background-color: white !important;
+    color: black !important;
+}
+
+/* Ensure labels are visible */
+.form-floating label {
+    color: black !important;
+    opacity: 1 !important;
+}
