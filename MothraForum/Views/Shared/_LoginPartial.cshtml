@@ -2,30 +2,33 @@
 
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
+@{
+    var user = await UserManager.GetUserAsync(User);
+}
 
 <ul class="navbar-nav">
-@if (SignInManager.IsSignedIn(User))
-{
+    @if (SignInManager.IsSignedIn(User))
+    {
         <li class="nav-item d-flex align-items-center">
-            <a href="#">
-            <button class="btn btn-secondary rounded-circle btn-icon">
-                <i class="fas fa-user"></i>
-            </button>
+            <a href="@Url.Action("Profile", "Home", new { id = user.Id })">
+                <button class="btn btn-secondary rounded-circle btn-icon">
+                    <i class="fas fa-user"></i>
+                </button>
             </a>
 
             <a id="manage" class="nav-link text-white" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
-                <span class="ms-2 text-white">@UserManager.GetUserName(User)</span>
+                <span class="ms-2 text-white">@(user?.Name ?? "Manage")</span>
             </a>
         </li>
-}
-else
-{
-    <li class="nav-item">
+    }
+    else
+    {
+        <li class="nav-item">
             <a class="nav-link text-white" id="register" asp-area="Identity" asp-page="/Account/Register">
                 <button class="btn btn-secondary rounded-circle btn-icon">
                     <i class="fas fa-user"></i>
                 </button>
             </a>
-    </li>
-}
+        </li>
+    }
 </ul>

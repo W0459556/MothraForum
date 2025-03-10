@@ -1,7 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Microsoft.EntityFrameworkCore;
-using MothraForum.Models;
-
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MothraForum.Models
 {
@@ -9,11 +7,15 @@ namespace MothraForum.Models
     {
         public int VoteId { get; set; } // uid
 
-        public int DiscussionId { get; set; } // the discussion
+        public int DiscussionId { get; set; } // discussion being voted on
 
-        [Range(-1, 1)] // +1 for upvote -1 for downvote
-        public int Value { get; set; }
+        public Discussion Discussion { get; set; } = null!;
 
-        public Discussion? Discussion { get; set; } // nav prop
+        public string ApplicationUserId { get; set; } = null!; // user who voted
+
+        [ForeignKey("ApplicationUserId")]
+        public ApplicationUser User { get; set; } = null!; 
+
+        public int Value { get; set; } // +1 for upvote, -1 for downvote
     }
 }

@@ -6,13 +6,13 @@
 
 <div class="container mt-5">
     <div class="rounded-4 post-d p-4 text-white">
-        <form asp-controller="Home" asp-action="Edit" method="post" enctype="multipart/form-data">
+        <form asp-controller="Discussion" asp-action="Edit" method="post" enctype="multipart/form-data">
             <input type="hidden" asp-for="DiscussionId" />
             <input type="hidden" asp-for="ImageFilename" /> <!-- Preserve the existing image -->
 
             <div class="mb-3">
                 <label for="Title" class="form-label">Title</label>
-                <input type="text" id="Title" name="Title" class="form-control bg-dark" value="@Model.Title">
+                <input type="text" id="Title" name="Title" class="form-control" style="color:black !important;" value="@Model.Title">
             </div>
 
             @if (!string.IsNullOrEmpty(Model.ImageFilename))
@@ -24,12 +24,7 @@
 
             <div class="mb-3">
                 <label for="Content" class="form-label">Content</label>
-                <textarea id="Content" name="Content" class="form-control bg-dark text-light" rows="5">@Model.Content</textarea>
-            </div>
-
-            <div class="mb-3">
-                <label asp-for="ImageFile" class="form-label">Replace Image (Optional)</label>
-                <input asp-for="ImageFile" type="file" class="form-control bg-dark" />
+                <textarea id="Content" name="Content" class="form-control" rows="5">@Model.Content</textarea>
             </div>
 
             <div class="row">

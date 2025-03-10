@@ -1,4 +1,11 @@
-﻿@model MothraForum.Models.Discussion
+﻿@using Microsoft.AspNetCore.Identity
+@model MothraForum.Models.Discussion
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@{
+    var user = await UserManager.GetUserAsync(User);
+}
 
 @{
     ViewData["Title"] = Model.Title;
@@ -20,15 +27,15 @@
 
         <div class="row">
             <div class="col-6 d-flex align-items-center">
-                <form method="post" asp-controller="Home" asp-action="Vote" asp-route-id="@Model.DiscussionId" asp-route-value="1" class="d-inline">
+                <form method="post" asp-controller="Vote" asp-action="Create" asp-route-discussionId="@Model.DiscussionId" asp-route-value="1" class="d-inline">
                     <button type="submit" class="btn btn-black">
                         <i class="text-danger fa-solid fa-2x fa-angle-up"></i>
                     </button>
                 </form>
 
-                <span class="mx-3">@Model.Votes.Sum(v => v.Value)</span>
+                @Model.Votes.Sum(v => v.Value)
 
-                <form method="post" asp-controller="Home" asp-action="Vote" asp-route-id="@Model.DiscussionId" asp-route-value="-1" class="d-inline">
+                <form method="post" asp-controller="Vote" asp-action="Create" asp-route-discussionId="@Model.DiscussionId" asp-route-value="-1" class="d-inline">
                     <button type="submit" class="btn btn-black">
                         <i class="fa-solid text-info fa-2x fa-angle-down"></i>
                     </button>
@@ -36,20 +43,24 @@
             </div>
 
             <div class="col-6 d-flex align-items-center text-end pe-5 justify-content-end">
-                <h4>
-                    <a class="text-decoration-none" href="@Url.Action("Edit", "Home", new { id = Model.DiscussionId })"><i class="fa-solid text-warning pe-4 fa-pencil"></i></a>
-                </h4>
-                <form method="post" asp-controller="Home" asp-action="Delete" asp-route-id="@Model.DiscussionId" class="d-inline" onsubmit="return confirmDelete()">
-                    <button type="submit" class="btn btn-black">
-                        <h4><i class="fa-solid text-danger fa-trash"></i></h4>
-                    </button>
-                </form>
+                
+                @if (SignInManager.IsSignedIn(User) && Model.ApplicationUserId == user.Id)
+                {
+                    <h4>
+                        <a class="text-decoration-none" href="@Url.Action("Edit", "Discussion", new { id = Model.DiscussionId })"><i class="fa-solid text-warning pe-4 fa-pencil"></i></a>
+                    </h4>
+                    <form method="post" asp-controller="Discussion" asp-action="Delete" asp-route-id="@Model.DiscussionId" class="d-inline" onsubmit="return confirmDelete()">
+                        <button type="submit" class="btn btn-black">
+                            <h4><i class="fa-solid text-danger fa-trash"></i></h4>
+                        </button>
+                    </form>
 
-                <script>
-                    function confirmDelete() {
-                        return confirm('Delete "@Html.Raw(Model.Title)"?');
-                    }
-                </script>
+                    <script>
+                        function confirmDelete() {
+                            return confirm('Delete "@Html.Raw(Model.Title)"?');
+                        }
+                    </script>
+                }
             </div>
         </div>
 

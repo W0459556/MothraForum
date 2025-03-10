@@ -8,7 +8,7 @@ namespace MothraForum.Models
         public required string Name { get; set; }
         public string? Location { get; set; }
 
-        public string ImageFilename { get; set; } = "default.jpg"; 
+        public string ImageFilename { get; set; } = "image.png"; 
 
         [NotMapped]
         public IFormFile? ImageFile { get; set; } 

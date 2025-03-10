@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MothraForum.Data;
 using MothraForum.Models;
@@ -13,27 +11,59 @@ namespace MothraForum.Controllers
     public class VoteController : Controller
     {
         private readonly MothraForumContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public VoteController(MothraForumContext context)
+        public VoteController(MothraForumContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
-        // POST: Vote/Create
         [HttpPost]
-        
         public async Task<IActionResult> Create(int discussionId, int value)
         {
-            var vote = new Vote
+            var userId = _userManager.GetUserId(User);
+            if (userId == null)
             {
-                DiscussionId = discussionId,
-                Value = value
-            };
+                return Unauthorized(); 
+            }
 
-            _context.Add(vote);
-            await _context.SaveChangesAsync(); // add vote & save
+            var discussion = await _context.Discussions.Include(d => d.Votes)
+                                                       .FirstOrDefaultAsync(d => d.DiscussionId == discussionId);
 
-            return RedirectToAction("Index", "Home", new { id = discussionId }); // Redirect to the discussion details page
+            if (discussion == null)
+            {
+                return NotFound();
+            }
+
+            var existingVote = await _context.Votes
+                .FirstOrDefaultAsync(v => v.DiscussionId == discussionId && v.ApplicationUserId == userId);
+
+            if (existingVote != null)
+            {
+                if (existingVote.Value == value)
+                {
+                    _context.Votes.Remove(existingVote);
+                }
+                else
+                {
+                    existingVote.Value = value;
+                    _context.Votes.Update(existingVote);
+                }
+            }
+            else
+            {
+                var vote = new Vote
+                {
+                    DiscussionId = discussionId,
+                    ApplicationUserId = userId,
+                    Value = value
+                };
+                _context.Votes.Add(vote);
+            }
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index", "Home", new { id = discussionId });
         }
     }
 }

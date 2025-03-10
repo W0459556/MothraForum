@@ -1,8 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
-using MothraForum.Models;
-
 
 namespace MothraForum.Models
 {
@@ -19,5 +17,10 @@ namespace MothraForum.Models
         public int DiscussionId { get; set; } // the discussion the comment belongs to
 
         public Discussion? Discussion { get; set; } // nav property
+
+        public string? ApplicationUserId { get; set; } 
+
+        [ForeignKey("ApplicationUserId")]
+        public ApplicationUser? User { get; set; } 
     }
 }

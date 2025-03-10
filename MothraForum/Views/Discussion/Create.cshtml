@@ -7,15 +7,15 @@
 <div class="container mt-5">
     <div class="rounded-4 post-d p-4 text-white">
         <h1>Create a New Discussion</h1>
-        <form asp-controller="Home" asp-action="Create" method="post" enctype="multipart/form-data">
+        <form asp-controller="Discussion" asp-action="Create" method="post" enctype="multipart/form-data">
             <div class="mb-3">
                 <label asp-for="Title" class="form-label">Title</label>
-                <input asp-for="Title" class="form-control bg-dark text-white" required />
+                <input asp-for="Title" class="form-control" style="color:black !important;" required />
             </div>
 
             <div class="mb-3">
                 <label asp-for="Content" class="form-label">Content</label>
-                <textarea asp-for="Content" class="form-control bg-dark text-white" rows="5" required></textarea>
+                <textarea asp-for="Content" class="form-control" rows="5" required></textarea>
             </div>
 
             <div class="mb-3">

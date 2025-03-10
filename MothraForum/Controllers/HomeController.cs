@@ -1,25 +1,23 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MothraForum.Data;
 using MothraForum.Models;
-using System.IO;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using System.Linq;
+using System.Threading.Tasks;
 
 public class HomeController : Controller
 {
     private readonly MothraForumContext _context;
+    private readonly UserManager<ApplicationUser> _userManager;
 
-    public HomeController(MothraForumContext context)
+    public HomeController(MothraForumContext context, UserManager<ApplicationUser> userManager)
     {
         _context = context;
+        _userManager = userManager;
     }
 
-
+    // Home (Index) page to display discussions
     public async Task<IActionResult> Index()
     {
         var discussions = await _context.Discussions
@@ -30,7 +28,7 @@ public class HomeController : Controller
         return View(discussions);
     }
 
-
+    // Discussion details page
     public async Task<IActionResult> DiscussionDetails(int id)
     {
         var discussion = await _context.Discussions
@@ -47,137 +45,7 @@ public class HomeController : Controller
         return View(discussion);
     }
 
-
-    public IActionResult Create()
-    {
-        return View();
-    }
-
-
-    [HttpPost]
-    public async Task<IActionResult> Create([Bind("Title,Content,ImageFile")] Discussion discussion)
-    {
-        if (ModelState.IsValid)
-        {
-            discussion.CreatedAt = DateTime.Now;
-
-
-            if (discussion.ImageFile != null)
-            {
-                var fileName = Path.GetFileName(discussion.ImageFile.FileName);
-                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", fileName);
-                using (var stream = new FileStream(filePath, FileMode.Create))
-                {
-                    await discussion.ImageFile.CopyToAsync(stream);
-                }
-                discussion.ImageFilename = fileName;
-            }
-
-            _context.Add(discussion);
-            await _context.SaveChangesAsync();
-            return RedirectToAction("Index");
-        }
-        return View(discussion);
-    }
-
-
-    public async Task<IActionResult> Edit(int? id)
-    {
-        if (id == null)
-        {
-            return NotFound();
-        }
-
-        var discussion = await _context.Discussions.FindAsync(id);
-        if (discussion == null)
-        {
-            return NotFound();
-        }
-        return View(discussion);
-    }
-
-
-    [HttpPost]
-    public async Task<IActionResult> Edit(int id, [Bind("DiscussionId,Title,Content,ImageFilename")] Discussion discussion, IFormFile? ImageFile)
-    {
-        if (id != discussion.DiscussionId)
-        {
-            return NotFound();
-        }
-
-        if (ModelState.IsValid)
-        {
-            try
-            {
-                var existingDiscussion = await _context.Discussions.FindAsync(id);
-                if (existingDiscussion == null)
-                {
-                    return NotFound();
-                }
-
-                existingDiscussion.Title = discussion.Title;
-                existingDiscussion.Content = discussion.Content;
-
-
-                if (ImageFile != null && ImageFile.Length > 0)
-                {
-                    var fileName = Path.GetFileName(ImageFile.FileName);
-                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", fileName);
-                    using (var stream = new FileStream(filePath, FileMode.Create))
-                    {
-                        await ImageFile.CopyToAsync(stream);
-                    }
-                    existingDiscussion.ImageFilename = fileName;
-                }
-
-                _context.Update(existingDiscussion);
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!_context.Discussions.Any(e => e.DiscussionId == id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-            return RedirectToAction("DiscussionDetails", new { id = discussion.DiscussionId });
-        }
-        return View(discussion);
-    }
-
-
-    public async Task<IActionResult> Delete(int? id)
-    {
-        if (id == null)
-        {
-            return NotFound();
-        }
-
-        var discussion = await _context.Discussions
-            .FirstOrDefaultAsync(d => d.DiscussionId == id);
-        if (discussion == null)
-        {
-            return NotFound();
-        }
-
-        return View(discussion);
-    }
-
-
-    [HttpPost, ActionName("Delete")]
-    public async Task<IActionResult> DeleteConfirmed(int id)
-    {
-        var discussion = await _context.Discussions.FindAsync(id);
-        _context.Discussions.Remove(discussion);
-        await _context.SaveChangesAsync();
-        return RedirectToAction("Index");
-    }
-
-
+    // Voting action
     [HttpPost]
     public async Task<IActionResult> Vote(int id, int value)
     {
@@ -197,8 +65,27 @@ public class HomeController : Controller
         return RedirectToAction(nameof(DiscussionDetails), new { id });
     }
 
-    private bool DiscussionExists(int id)
+    // Profile page for a specific user
+    public async Task<IActionResult> Profile(string id)
     {
-        return _context.Discussions.Any(e => e.DiscussionId == id);
+        var user = await _userManager.FindByIdAsync(id);
+        if (user == null)
+        {
+            return NotFound();
+        }
+
+        var discussions = await _context.Discussions
+                                         .Where(d => d.ApplicationUserId == user.Id)
+                                         .Include(d => d.Votes)
+                                         .Include(d => d.Comments)
+                                         .ToListAsync();
+
+        var model = new ProfileViewModel
+        {
+            User = user,
+            Discussions = discussions
+        };
+
+        return View(model);
     }
 }

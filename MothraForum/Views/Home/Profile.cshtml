@@ -1,0 +1,86 @@
+﻿@model MothraForum.Models.ProfileViewModel
+
+@{
+    ViewData["Title"] = $"{Model.User.UserName}'s Profile";
+}
+
+<div class="container mt-1">
+
+    <div class="row">
+        <div class="col-1">
+            <div class="col-1 ratio ratio-1x1">
+                @if (!string.IsNullOrEmpty(Model.User.ImageFilename))
+                {
+                    <img src="@Url.Content("~/images/" + Model.User.ImageFilename)" alt="Profile Picture" class="img-fluid rounded-circle">
+                }
+                else
+                {
+                    <img src="@Url.Content("~/images/image.png")" alt="Profile Picture" class="img-fluid rounded-circle">
+                }
+            </div>
+        </div>
+        <div class="col-11">
+            <h1>@Model.User.Name</h1>
+        </div>
+        <div class="col-12">
+            <h3>@Model.User.UserName</h3>
+            <p>@Model.User.Location</p>
+        </div>
+    </div>
+
+    <hr />
+
+    <h3>@Model.User.Name's Discussions</h3>
+
+    @foreach (var discussion in Model.Discussions)
+    {
+        <div class="rounded-4 post my-3 p-5 text-white">
+            <a class="link-light text-decoration-none" asp-controller="Home" asp-action="DiscussionDetails" asp-route-id="@discussion.DiscussionId">
+                <div class="col-12">
+                    <h3>@discussion.Title</h3>
+                    <p class="small text-secondary">@discussion.CreatedAt</p>
+                </div>
+
+                @if (!string.IsNullOrEmpty(discussion.ImageFilename))
+                {
+                    <div class="col-12 mb-3">
+                        <div class="imageContainerContainer rounded-4">
+                            <div class="imageContainer">
+                                <img src="@Url.Content("~/images/" + discussion.ImageFilename)" alt="@discussion.Title" class="img-fluid">
+                            </div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <p>@discussion.Content</p>
+                }
+            </a>
+
+            <div class="row">
+                <div class="col-6 d-flex align-items-center">
+                    <form method="post" asp-controller="Vote" asp-action="Create" asp-route-discussionId="@discussion.DiscussionId" asp-route-value="1" class="d-inline">
+                        <button type="submit" class="btn btn-black">
+                            <i class="text-danger fa-solid fa-2x fa-angle-up"></i>
+                        </button>
+                    </form>
+
+                    @discussion.Votes.Sum(v => v.Value)
+
+                    <form method="post" asp-controller="Vote" asp-action="Create" asp-route-discussionId="@discussion.DiscussionId" asp-route-value="-1" class="d-inline">
+                        <button type="submit" class="btn btn-black">
+                            <i class="fa-solid text-info fa-2x fa-angle-down"></i>
+                        </button>
+                    </form>
+                </div>
+
+                <div class="col-6 d-flex justify-content-end align-items-center">
+                    <a asp-controller="Home" asp-action="DiscussionDetails" asp-route-id="@discussion.DiscussionId" class="btn btn-secondary rounded-pill btn-icon d-flex align-items-center">
+                        <i class="fas fa-comment me-2"></i> @discussion.Comments.Count()
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
+
+</div>

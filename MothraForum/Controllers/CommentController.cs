@@ -1,57 +1,86 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using MothraForum.Data;
 using MothraForum.Models;
 
-namespace MothraForum.Controllers
+[Authorize] 
+public class CommentController : Controller
 {
-    public class CommentController : Controller
+    private readonly MothraForumContext _context;
+    private readonly UserManager<ApplicationUser> _userManager;
+
+    public CommentController(MothraForumContext context, UserManager<ApplicationUser> userManager)
     {
-        private readonly MothraForumContext _context;
+        _context = context;
+        _userManager = userManager;
+    }
 
-        public CommentController(MothraForumContext context)
+    public IActionResult Create(int discussionId)
+    {
+        ViewData["DiscussionId"] = discussionId;
+        return View();
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> AddComment(int discussionId, string content)
+    {
+        if (string.IsNullOrWhiteSpace(content))
         {
-            _context = context;
-        }
-
-        // GET: Comment/Create/5
-        public IActionResult Create(int discussionId)
-        {
-            ViewData["DiscussionId"] = discussionId;
-            return View();
-        }
-
-        // POST: Comment/Create
-        [HttpPost]
-        
-        public async Task<IActionResult> AddComment(int discussionId, string content)
-        {
-            if (string.IsNullOrWhiteSpace(content))
-            {
-                return RedirectToAction("DiscussionDetails", "Home", new { id = discussionId });
-            }
-
-            var comment = new Comment
-            {
-                DiscussionId = discussionId,
-                Content = content,
-                CreatedAt = DateTime.Now
-            };
-
-            _context.Comments.Add(comment);
-            await _context.SaveChangesAsync();
-
             return RedirectToAction("DiscussionDetails", "Home", new { id = discussionId });
         }
 
-        private bool CommentExists(int id)
+        var userId = _userManager.GetUserId(User);
+        if (userId == null) return Unauthorized();
+
+        var comment = new Comment
         {
-            return _context.Comments.Any(e => e.CommentId == id);
+            DiscussionId = discussionId,
+            ApplicationUserId = userId,
+            Content = content,
+            CreatedAt = DateTime.Now
+        };
+
+        _context.Comments.Add(comment);
+        await _context.SaveChangesAsync();
+
+        return RedirectToAction("DiscussionDetails", "Home", new { id = discussionId });
+    }
+
+    public async Task<IActionResult> Delete(int? id)
+    {
+        if (id == null) return NotFound();
+
+        var comment = await _context.Comments.FindAsync(id);
+        if (comment == null) return NotFound();
+
+        var userId = _userManager.GetUserId(User);
+        if (comment.ApplicationUserId != userId)
+        {
+            return Forbid();
         }
+
+        return View(comment);
+    }
+
+    [HttpPost, ActionName("Delete")]
+    public async Task<IActionResult> DeleteConfirmed(int id)
+    {
+        var comment = await _context.Comments.FindAsync(id);
+        if (comment == null) return NotFound();
+
+        var userId = _userManager.GetUserId(User);
+        if (comment.ApplicationUserId != userId)
+        {
+            return Forbid();
+        }
+
+        _context.Comments.Remove(comment);
+        await _context.SaveChangesAsync();
+        return RedirectToAction("Index", "Home");
     }
 }
