@@ -11,8 +11,8 @@ using MothraForum.Data;
 namespace MothraForum.Migrations
 {
     [DbContext(typeof(MothraForumContext))]
-    [Migration("20250310000011_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20250310001720_InitialCreate3")]
+    partial class InitialCreate3
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

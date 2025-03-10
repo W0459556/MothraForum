@@ -72,7 +72,7 @@ namespace MothraForum.Areas.Identity.Pages.Account
             public string Location { get; set; }
 
             [Display(Name = "Profile Image Filename")]
-            public string ImageFilename { get; set; }
+            public string? ImageFilename { get; set; }
 
             [Display(Name = "Profile Image")]
             public IFormFile ImageFile { get; set; }
